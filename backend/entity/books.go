@@ -7,7 +7,7 @@ import (
 type Book struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	UserID    uint      `json:"user_id"`
-	User      User      `gorm:"foreignKey:UserID"`
+	User      user      `gorm:"foreignKey:UserID"`
 	Title     string    `json:"title"`
 	Author    string    `json:"author"`
 	Year      int       `json:"year"`
