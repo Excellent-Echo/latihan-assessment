@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"book-list/entity"
 	"book-list/layer/user"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func (h *userHandler) ShowAllUser(c *gin.Context) {
 }
 
 func (h *userHandler) CreateNewUsers(c *gin.Context) {
-	var input user.UserInput
+	var input entity.UserInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
