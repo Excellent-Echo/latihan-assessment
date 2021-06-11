@@ -29,7 +29,6 @@ func NewService(repo Repository) *service {
 func (s *service) GetAllUsers() ([]entity.UserOutput, error) {
 	users, err := s.repo.FindAll()
 
-	fmt.Print(users)
 	var usersOutput []entity.UserOutput
 
 	for _, user := range users {
