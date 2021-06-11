@@ -12,9 +12,9 @@ import (
 type Service interface {
 	SShowAllBook() ([]BookFormat, error)
 	SRegisterUser(book entity.BookInput) (BookFormat, error)
-	SFindUserByID(userID string) (BookFormat, error)
-	SDeleteUserByID(userID string) (interface{}, error)
-	SUpdateUserByID(userID string, input entity.UpdateBookInput) (BookFormat, error)
+	SFindBookByID(bookID string) (BookFormat, error)
+	SDeleteBookByID(bookID string) (interface{}, error)
+	SUpdateBookByID(bookID string, input entity.UpdateBookInput) (BookFormat, error)
 }
 
 type service struct {
@@ -43,12 +43,12 @@ func (s *service) SShowAllUserr() ([]BookFormat, error) {
 
 func (s *service) SRegisterBook(book entity.BookInput) (BookFormat, error) {
 
-	strconv.Itoa(book.Year)
+	year, _ := strconv.Atoi(book.Year)
 
 	var newBook = entity.Book{
 		Tittle:    book.Tittle,
 		Author:    book.Author,
-		Year:      book.Year,
+		Year:      year,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -63,91 +63,91 @@ func (s *service) SRegisterBook(book entity.BookInput) (BookFormat, error) {
 	return formatBook, nil
 }
 
-func (s *service) SFindUserByID(userID string) (UserFormat, error) {
-	user, err := s.repository.RFindUserByID(userID)
+func (s *service) SFindBookByID(bookID string) (BookFormat, error) {
+	book, err := s.repository.RFindBookByID(bookID)
 
 	if err != nil {
-		return UserFormat{}, err
+		return BookFormat{}, err
 	}
 
-	if user.ID == 0 {
-		newError := fmt.Sprintf("user id %s not found", userID)
-		return UserFormat{}, errors.New(newError)
+	if book.ID == 0 {
+		newError := fmt.Sprintf("book id %s not found", bookID)
+		return BookFormat{}, errors.New(newError)
 	}
 
-	formatUser := Format(user)
+	formatBook := FormatBook(book)
 
-	return formatUser, nil
+	return formatBook, nil
 }
 
-func (s *service) SDeleteUserByID(userID string) (interface{}, error) {
-	if err := helper.ValidateIDNumber(userID); err != nil {
+func (s *service) SDeleteBookByID(bookID string) (interface{}, error) {
+	if err := helper.ValidateIDNumber(bookID); err != nil {
 		return nil, err
 	}
 
-	user, err := s.repository.RFindUserByID(userID)
+	book, err := s.repository.RFindBookByID(bookID)
 
 	if err != nil {
 		return nil, err
 	}
-	if user.ID == 0 {
-		newError := fmt.Sprintf("user id %s not found", userID)
+	if book.ID == 0 {
+		newError := fmt.Sprintf("book id %s not found", bookID)
 		return nil, errors.New(newError)
 	}
 
-	status, err := s.repository.RDeleteUserByID(userID)
+	status, err := s.repository.RDeleteBookByID(bookID)
 
 	if status == "error" {
 		return nil, errors.New("error delete in internal server")
 	}
 
-	msg := fmt.Sprintf("success delete user ID : %s", userID)
+	msg := fmt.Sprintf("success delete book ID : %s", bookID)
 
-	formatDelete := FormatDelete(msg)
+	formatDelete := FormatDeleteBook(msg)
 
 	return formatDelete, nil
 }
 
-func (s *service) SUpdateUserByID(userID string, input entity.UpdateUserInput) (UserFormat, error) {
+func (s *service) SUpdateBookByID(bookID string, input entity.UpdateBookInput) (BookFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
-	if err := helper.ValidateIDNumber(userID); err != nil {
-		return UserFormat{}, err
+	if err := helper.ValidateIDNumber(bookID); err != nil {
+		return BookFormat{}, err
 	}
 
-	user, err := s.repository.RFindUserByID(userID)
+	book, err := s.repository.RFindBookByID(bookID)
 
 	if err != nil {
-		return UserFormat{}, err
+		return BookFormat{}, err
 	}
 
-	if user.ID == 0 {
-		newError := fmt.Sprintf("user id %s not found", userID)
-		return UserFormat{}, errors.New(newError)
+	if book.ID == 0 {
+		newError := fmt.Sprintf("book id %s not found", bookID)
+		return BookFormat{}, errors.New(newError)
 	}
 
-	if input.Name != "" || len(input.Name) != 0 {
-		dataUpdate["Name"] = input.Name
+	if input.Tittle != "" || len(input.Tittle) != 0 {
+		dataUpdate["Tittle"] = input.Tittle
 	}
-	if input.Address != "" || len(input.Address) != 0 {
-		dataUpdate["Address"] = input.Address
+	if input.Author != "" || len(input.Author) != 0 {
+		dataUpdate["Author"] = input.Author
 	}
 
-	if input.DateBirth != "" || len(input.DateBirth) != 0 {
-		dataUpdate["DateBirth"] = input.DateBirth
+	if input.Year != "" || len(input.Year) != 0 {
+		dataUpdate["Year"] = input.Year
 	}
 
 	dataUpdate["updated_at"] = time.Now()
 
 	// fmt.Println(dataUpdate)
 
-	userUpdated, err := s.repository.RUpdateUserByID(userID, dataUpdate)
+	bookUpdated, err := s.repository.RUpdateBookByID(bookID, dataUpdate)
 
 	if err != nil {
-		return UserFormat{}, err
+		return BookFormat{}, err
 	}
 
-	formatUser := Format(userUpdated)
+	formatBook := FormatBook(bookUpdated)
 
-	return formatUser, nil
+	return formatBook, nil
 }
