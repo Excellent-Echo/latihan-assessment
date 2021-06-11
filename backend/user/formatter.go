@@ -25,3 +25,17 @@ func FormatUser(user entity.User) UserFormat {
 	}
 	return formatUser
 }
+
+type DeleteFormat struct {
+	Message    string    `json:"message"`
+	TimeDelete time.Time `json:"time_delete"`
+}
+
+func FormatDeleteUser(message string) DeleteFormat {
+	var deleteFormat = DeleteFormat{
+		Message:    message,
+		TimeDelete: time.Now(),
+	}
+
+	return deleteFormat
+}

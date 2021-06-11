@@ -73,6 +73,12 @@ func (r *repository) UpdateUserById(ID string, userUpdate map[string]interface{}
 
 }
 
-//func (r *repository) GetUserByEmail(email string) (entity.User, error) {
-//
-//}
+func (r *repository) GetUserByEmail(email string) (entity.User, error) {
+	var user entity.User
+
+	if err := r.db.Where("email = ?", email).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
