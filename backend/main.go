@@ -4,8 +4,8 @@ import "github.com/gin-gonic/gin"
 
 func main() {
 
-	r := gin.Default
+	r := gin.Default()
 
-	r.Run(":1112")
+	r.Run()
 
 }
