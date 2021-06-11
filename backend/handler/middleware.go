@@ -41,8 +41,6 @@ func Middleware(userService user.Service, authService auth.Service) gin.HandlerF
 
 		userID := int(claim["user_id"].(float64))
 
-		// kita bisa pakai nanti
 		c.Set("currentUser", userID)
-		// -
 	}
 }

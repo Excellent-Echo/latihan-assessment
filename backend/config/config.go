@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connnection() *gorm.DB {
+func Connection() *gorm.DB {
 	err := godotenv.Load()
 
 	dbUser := os.Getenv("DB_USERNAME")

@@ -16,7 +16,7 @@ type Service interface {
 	SFindUserByID(userID string) (UserFormat, error)
 	SDeleteUserByID(userID string) (interface{}, error)
 	SUpdateUserByID(userID string, input entity.UpdateUserInput) (UserFormat, error)
-	LoginUser(input entity.LoginUserInput) (entity.User, error)
+	SLoginUser(input entity.LoginUserInput) (entity.User, error)
 }
 
 type service struct {
@@ -27,7 +27,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) LoginUser(input entity.LoginUserInput) (entity.User, error) {
+func (s *service) SLoginUser(input entity.LoginUserInput) (entity.User, error) {
 	user, err := s.repository.RFindUserByEmail(input.Email)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (s *service) LoginUser(input entity.LoginUserInput) (entity.User, error) {
 	return user, nil
 }
 
-func (s *service) SShowAllUserr() ([]UserFormat, error) {
+func (s *service) SShowAllUser() ([]UserFormat, error) {
 	Users, err := s.repository.RShowAllUser()
 	var formatUsers []UserFormat
 
