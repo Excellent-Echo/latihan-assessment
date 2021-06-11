@@ -1,9 +1,7 @@
 package user
 
-import "latihan-assessment/entity"
-
 type Service interface {
-	GetAllUser() ([]entity.User, error)
+	GetAllUser() ([]UserFormat, error)
 }
 
 type service struct {
@@ -14,6 +12,17 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service)GetAllUser() ([]entity.User, error)   {
-	Users, err := s.repository.GetAll()
+func (s *service) GetAllUser() ([]UserFormat, error) {
+	users, err := s.repository.GetAllUsers()
+	var formatUsers []UserFormat
+
+	for _, user := range users {
+		formatuser := FormatUser(user)
+		formatUsers = append(formatUsers, formatuser)
+	}
+
+	if err != nil {
+		return formatUsers, err
+	}
+	return formatUsers, nil
 }
