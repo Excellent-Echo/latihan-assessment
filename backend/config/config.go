@@ -1,6 +1,7 @@
 package config
 
 import (
+	"backend/entity"
 	"fmt"
 	"os"
 
@@ -21,6 +22,9 @@ func SetupConnection() *gorm.DB {
 	if err != nil {
 		panic("failed to create a connection to database")
 	}
+
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Book{})
 
 	return db
 }
