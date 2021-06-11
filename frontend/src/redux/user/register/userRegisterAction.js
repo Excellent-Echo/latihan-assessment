@@ -105,7 +105,7 @@ const register = (name, address, dateBirth, email, password) => async dispatch =
 
   } catch (error) {
     console.log(error);
-    dispatch(setErrorMessage(error.response.data.data.error || ["internal server error"]));
+    dispatch(setErrorMessage(error.response.data.error || ["internal server error"]));
     dispatch(stopLoading());
   }
 

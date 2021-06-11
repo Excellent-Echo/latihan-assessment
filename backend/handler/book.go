@@ -97,7 +97,7 @@ func (h *bookHandler) UpdateBookByIDHandler(c *gin.Context) {
 
 	if idParam != userData {
 		c.JSON(401, gin.H{
-			"error": "unauthorized user",
+			"error": "unauthorize user",
 		})
 		return
 	}
@@ -116,7 +116,7 @@ func (h *bookHandler) DeleteByBookIDHandler(c *gin.Context) {
 
 	if idParam != userData {
 		c.JSON(401, gin.H{
-			"error": "unauthorized user",
+			"error": "unauthorize user",
 		})
 		return
 	}
