@@ -5,6 +5,15 @@ import (
 	"time"
 )
 
+type UserLoginOutput struct {
+	ID            int    `json:"id"`
+	Name          string `json:"name"`
+	Address       string `json:"string"`
+	DateBirth     string `json:"date_birth"`
+	Email         string `json:"email"`
+	Authorization string `json:"authorization"`
+}
+
 func UserOutputFormat(user entity.Users) entity.UserOutput {
 	var userOutput = entity.UserOutput{
 		ID:        user.ID,
