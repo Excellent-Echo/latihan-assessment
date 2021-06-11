@@ -28,3 +28,14 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	}
 	c.JSON(201, response)
 }
+
+func (h *userHandler) ShowAllUserHandler(c *gin.Context) {
+	users, err := h.userService.GetAllUser()
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, users)
+
+}

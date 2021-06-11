@@ -18,4 +18,5 @@ var (
 
 func UserRoutes(r *gin.Engine) {
 	r.POST("/users/register", userHandler.CreateUserHandler)
+	r.GET("/users", userHandler.ShowAllUserHandler)
 }

@@ -9,6 +9,7 @@ import (
 
 type UserService interface {
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
+	GetAllUser() ([]UserFormat, error)
 }
 
 type userService struct {
@@ -42,4 +43,17 @@ func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	}
 
 	return formatUser, nil
+}
+
+func (s *userService) GetAllUser() ([]UserFormat, error) {
+	users, err := s.repository.ReadAllUser()
+	var usersFormat []UserFormat
+	for _, user := range users {
+		var userFormat = FormattingUser(user)
+		usersFormat = append(usersFormat, userFormat)
+	}
+	if err != nil {
+		return usersFormat, err
+	}
+	return usersFormat, nil
 }
