@@ -21,10 +21,10 @@ func UserNewService(repository UserRepository) *userService {
 
 func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
-
 	if err != nil {
 		return UserFormat{}, err
 	}
+
 	var newUser = entity.User{
 		Name:      user.Name,
 		Email:     user.Email,
@@ -43,3 +43,5 @@ func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 
 	return formatUser, nil
 }
+
+//STUCK
