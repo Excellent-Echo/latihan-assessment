@@ -6,6 +6,7 @@ import (
 	"latihanassesment/helper"
 	"latihanassesment/user"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,6 +34,7 @@ func (h *userHandler) ShowUserHandler(c *gin.Context) {
 
 func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	var inputUser entity.UserInput
+	var birth time.Time
 
 	if err := c.ShouldBindJSON(&inputUser); err != nil {
 		splitError := helper.SpilitErrorInformation(err)
@@ -41,7 +43,7 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 		return
 	}
 
-	newUser, err := h.userService.SaveNewUser(inputUser)
+	newUser, err := h.userService.SaveNewUser(birth, inputUser)
 	if err != nil {
 		c.JSON(500, newUser)
 		return

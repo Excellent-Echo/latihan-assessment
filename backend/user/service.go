@@ -12,7 +12,7 @@ import (
 
 type Service interface {
 	GetAllUser() ([]UserFormat, error)
-	SaveNewUser(user entity.UserInput) (UserFormat, error)
+	SaveNewUser(birth time.Time, user entity.UserInput) (UserFormat, error)
 	GetUserByID(ID string) (UserFormat, error)
 	UpdateUserByID(userID string, dataInput entity.UpdateUserInput) (UserFormat, error)
 	DeleteUserByID(userID string) (interface{}, error)
@@ -65,7 +65,7 @@ func (s *service) GetUserByID(ID string) (UserFormat, error) {
 	return formatUser, nil
 }
 
-func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
+func (s *service) SaveNewUser(birth time.Time, user entity.UserInput) (UserFormat, error) {
 	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
 
 	if err != nil {
@@ -75,7 +75,7 @@ func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	var newUser = entity.User{
 		Name:      user.Name,
 		Email:     user.Email,
-		DateBirth: user.DateBirth,
+		DateBirth: birth,
 		Password:  string(genPassword),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
