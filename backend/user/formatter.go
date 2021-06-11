@@ -6,12 +6,12 @@ import (
 )
 
 type UserFormat struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	Address   string    `json:"address"`
-	DateBirth time.Time `json:"date_birth"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	Address   string `json:"address"`
+	DateBirth string `json:"date_birth"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
 }
 
 func FormatUser(user entity.User) UserFormat {

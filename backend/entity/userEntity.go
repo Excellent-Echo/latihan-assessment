@@ -6,7 +6,7 @@ type User struct {
 	ID        int       `gorm:"primaryKey" json:"id"`
 	Name      string    `json:"name"`
 	Address   string    `json:"address"`
-	DateBirth time.Time `json:"date_birth"`
+	DateBirth string    `json:"date_birth"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"creted_at"`
@@ -15,17 +15,17 @@ type User struct {
 }
 
 type UserInput struct {
-	Name      string    `json:"name" binding:"required"`
-	Address   string    `json:"address" binding:"required"`
-	DateBirth time.Time `json:"date_birth" binding:"required"`
-	Email     string    `json:"email" binding:"required,email"`
-	Password  string    `json:"password" binding:"required"`
+	Name      string `json:"name" binding:"required"`
+	Address   string `json:"address" binding:"required"`
+	DateBirth string `json:"date_birth" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required"`
 }
 
 type UserInputUpdate struct {
-	Name      string    `json:"name"`
-	Address   string    `json:"address"`
-	DateBirth time.Time `json:"date_birth"`
+	Name      string `json:"name"`
+	Address   string `json:"address"`
+	DateBirth string `json:"date_birth"`
 }
 
 type UserLoginInput struct {

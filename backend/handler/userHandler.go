@@ -81,7 +81,7 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	c.JSON(201, response)
 }
 
-func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+func (h *userHandler) UserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
 	userByID, err := h.userService.UserById(id)
@@ -111,4 +111,30 @@ func (h *userHandler) DeleteUserIDHandler(c *gin.Context) {
 
 	responseSuccess := helper.APIResponse("Success delete user id", 200, "Delete OK", userDelete)
 	c.JSON(200, responseSuccess)
+}
+
+func (h *userHandler) UpdateUserIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	var userUpdate entity.UserInputUpdate
+
+	if err := c.ShouldBindJSON(&userUpdate); err != nil {
+		splitError := helper.ErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"error": splitError})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	users, err := h.userService.UpdateById(id, userUpdate)
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success update user by id", 200, "success", users)
+	c.JSON(200, response)
 }

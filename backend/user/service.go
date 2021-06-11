@@ -3,8 +3,10 @@ package user
 import (
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"latihan-assessment/entity"
 	"latihan-assessment/helper"
+	"time"
 )
 
 type Service interface {
@@ -71,7 +73,7 @@ func (s *service) UserById(userID string) (UserFormat, error) {
 	}
 
 	if user.ID == 0 {
-		newError := fmt.Sprint("user id is not found : %s ", userID)
+		newError := fmt.Sprintf("user id is not found : %s ", userID)
 		return UserFormat{}, errors.New(newError)
 	}
 
@@ -92,7 +94,7 @@ func (s *service) DeleteById(userID string) (interface{}, error) {
 	}
 
 	if user.ID == 0 {
-		newError := fmt.Sprint("user ID %s not found", userID)
+		newError := fmt.Sprintf("user ID %s not found", userID)
 		return nil, errors.New(newError)
 	}
 
@@ -110,10 +112,61 @@ func (s *service) DeleteById(userID string) (interface{}, error) {
 
 }
 
-//func (s *service) UpdateById(userID string, dataUpdate entity.UserInputUpdate) (UserFormat, error) {
-//
-//}
-//
-//func (s *service) LoginUser(input entity.UserLoginInput) (entity.User, error) {
-//
-//}
+func (s *service) UpdateById(userID string, dataUpdate entity.UserInputUpdate) (UserFormat, error) {
+	var UserUpdate = map[string]interface{}{}
+
+	if err := helper.ValidateIDNumber(userID); err != nil {
+		return UserFormat{}, err
+	}
+
+	user, err := s.repository.GetUserById(userID)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id not found : %s", userID)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	if dataUpdate.Name != "" || len(dataUpdate.Name) != 0 {
+		UserUpdate["name"] = dataUpdate.Name
+	}
+	if dataUpdate.Address != "" || len(dataUpdate.Address) != 0 {
+		UserUpdate["address"] = dataUpdate.Address
+	}
+
+	UserUpdate["date_birth"] = dataUpdate.DateBirth
+
+	UserUpdate["updated_at"] = time.Now()
+
+	userUpdated, err := s.repository.UpdateUserById(userID, UserUpdate)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	formatUser := FormatUser(userUpdated)
+
+	return formatUser, nil
+}
+
+func (s *service) LoginUser(input entity.UserLoginInput) (entity.User, error) {
+	user, err := s.repository.GetUserByEmail(input.Email)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id %v not found", user.ID)
+		return user, errors.New(newError)
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		return user, errors.New("password invalid")
+	}
+
+	return user, nil
+}
