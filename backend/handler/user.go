@@ -4,6 +4,7 @@ import (
 	"book-list/auth"
 	"book-list/entity"
 	"book-list/layer/user"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -75,13 +76,60 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 	c.JSON(200, LoginOutput)
 }
 
-func (h *userHandler) GetUserByid(c *gin.Context) {
-	var LoginInput entity.LoginInput
+func (h *userHandler) ShowUserByID(c *gin.Context) {
+	id := c.Param("user_id")
 
-	if err := c.ShouldBindJSON(&LoginInput); err != nil {
-		c.JSON(400, gin.H{"error": "input data required"})
+	user, err := h.service.GetUserByID(id)
+	if err != nil {
+
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	userData, err := h.service.LoginUser(LoginInput)
+	c.JSON(200, user)
+}
+
+func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
+	id := c.Param("user_id")
+
+	var updateUserInput entity.UserUpdateInput
+
+	if err := c.ShouldBindJSON(&updateUserInput); err != nil {
+
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	idParam, _ := strconv.Atoi(id)
+
+	// authorization userid dari params harus sama dengan user id yang login
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+
+		c.JSON(401, gin.H{"error": "unauthorize"})
+		return
+	}
+
+	user, err := h.service.UpdateUserByID(id, updateUserInput)
+	if err != nil {
+
+		c.JSON(500, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, user)
+}
+
+func (h *userHandler) DeleterUserByID(c *gin.Context) {
+	id := c.Param("user_id")
+
+	user, err := h.service.DeleteUserByID(id)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, user)
 }

@@ -33,3 +33,9 @@ type LoginInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type UserUpdateInput struct {
+	Name      string `json:"name"`
+	Address   string `json:"address"`
+	DateBirth string `json:"date_birth"`
+}

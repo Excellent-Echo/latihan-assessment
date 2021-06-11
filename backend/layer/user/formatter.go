@@ -14,6 +14,10 @@ type UserLoginOutput struct {
 	Authorization string `json:"authorization"`
 }
 
+type DeleteFormat struct {
+	Data string `json:"data"`
+}
+
 func UserOutputFormat(user entity.Users) entity.UserOutput {
 	var userOutput = entity.UserOutput{
 		ID:        user.ID,
@@ -37,4 +41,11 @@ func FormatStringDateBirth(date time.Time) string {
 	dateBirth := date.Format("2006-01-02")
 
 	return dateBirth
+}
+
+func FormatDelete(data string) DeleteFormat {
+	var deleteFormat = DeleteFormat{
+		Data: data,
+	}
+	return deleteFormat
 }

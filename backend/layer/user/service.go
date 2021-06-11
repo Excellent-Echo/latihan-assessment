@@ -14,6 +14,8 @@ type Service interface {
 	CreateNewUser(user entity.UserInput) (entity.UserOutput, error)
 	LoginUser(loginInput entity.LoginInput) (entity.Users, error)
 	GetUserByID(ID string) (entity.UserOutput, error)
+	UpdateUserByID(ID string, dataInput entity.UserUpdateInput) (entity.UserOutput, error)
+	DeleteUserByID(ID string) (interface{}, error)
 }
 
 type service struct {
@@ -92,4 +94,64 @@ func (s *service) GetUserByID(ID string) (entity.UserOutput, error) {
 
 	FormatOutput := UserOutputFormat(user)
 	return FormatOutput, nil
+}
+
+func (s *service) UpdateUserByID(ID string, dataInput entity.UserUpdateInput) (entity.UserOutput, error) {
+	var dataUpdate = map[string]interface{}{}
+
+	user, err := s.repo.FindUserByID(ID)
+
+	if err != nil {
+		return entity.UserOutput{}, err
+	}
+
+	if user.ID == 0 {
+		return entity.UserOutput{}, errors.New("User ID not found")
+	}
+
+	if dataInput.Name != "" || len(dataInput.Name) != 0 {
+		dataUpdate["name"] = dataInput.Name
+	}
+	if dataInput.Address != "" || len(dataInput.Address) != 0 {
+		dataUpdate["address"] = dataInput.Address
+	}
+	if dataInput.DateBirth != "" || len(dataInput.DateBirth) != 0 {
+		dataUpdate["date_birth"] = dataInput.DateBirth
+	}
+
+	dataUpdate["updated_at"] = time.Now()
+
+	userUpdated, err := s.repo.UpdateByID(ID, dataUpdate)
+
+	if err != nil {
+		return entity.UserOutput{}, err
+	}
+
+	formatUser := UserOutputFormat(userUpdated)
+
+	return formatUser, nil
+}
+
+func (s *service) DeleteUserByID(ID string) (interface{}, error) {
+	user, err := s.repo.FindUserByID(ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if user.ID == 0 {
+		return nil, errors.New("user id not found")
+	}
+
+	status, err := s.repo.DeleteByID(ID)
+
+	if status == "error" {
+		return nil, errors.New("error in internal server")
+	}
+
+	data := fmt.Sprintf("user id %s success deleted", ID)
+
+	formatDelete := FormatDelete(data)
+
+	return formatDelete, nil
 }

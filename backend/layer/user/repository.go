@@ -11,6 +11,8 @@ type Repository interface {
 	CreateUser(user entity.Users) (entity.Users, error)
 	FindUserByEmail(email string) (entity.Users, error)
 	FindUserByID(ID string) (entity.Users, error)
+	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.Users, error)
+	DeleteByID(ID string) (string, error)
 }
 
 type repository struct {
@@ -47,7 +49,7 @@ func (r *repository) FindUserByEmail(email string) (entity.Users, error) {
 	return users, nil
 }
 
-func (r *repository) FindByID(ID string) (entity.Users, error) {
+func (r *repository) FindUserByID(ID string) (entity.Users, error) {
 	var user entity.Users
 
 	if err := r.db.Where("id = ?", ID).Find(&user).Error; err != nil {
@@ -55,4 +57,26 @@ func (r *repository) FindByID(ID string) (entity.Users, error) {
 	}
 
 	return user, nil
+}
+
+func (r *repository) UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.Users, error) {
+	var user entity.Users
+
+	if err := r.db.Model(&user).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
+		return user, err
+	}
+
+	if err := r.db.Where("id = ?", ID).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (r *repository) DeleteByID(ID string) (string, error) {
+	if err := r.db.Where("id = ?", ID).Delete(&entity.Users{}).Error; err != nil {
+		return "error", err
+	}
+
+	return "success", nil
 }
