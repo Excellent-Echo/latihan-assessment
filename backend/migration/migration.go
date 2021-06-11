@@ -3,7 +3,7 @@ package migration
 import "time"
 
 type User struct {
-	ID        int `gorm:"primaryKey"`
+	ID        int `gorm:"PrimaryKey"`
 	Name      string
 	Address   string
 	DateBirth time.Time
@@ -11,11 +11,11 @@ type User struct {
 	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Book      []Book `gorm:"foreignKey:UserID"`
+	Book      []Book `gorm:"Foreignkey:UserID"`
 }
 
 type Book struct {
-	ID        int `gorm:"primaryKey" json:"id"`
+	ID        int `gorm:"Primarykey" json:"id"`
 	Tittle    string
 	Author    string
 	Year      int
