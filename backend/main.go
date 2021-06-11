@@ -1,11 +1,14 @@
 package main
 
 import (
-	"books-project/config"
-	"fmt"
+	"books-project/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	config.Connection()
-	fmt.Print("Sukses konek database")
+	r := gin.Default()
+
+	routes.UserRoutes(r)
+	r.Run(":8000")
 }
