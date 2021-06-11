@@ -15,3 +15,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	Books     []Book    `gorm:"foreignKey:UserID"`
 }
+
+type LoginUserInput struct {
+	Email string `json:"email" binding:"required,email"`
+}
