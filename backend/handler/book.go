@@ -2,9 +2,9 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/marwanjuna/latihan-assessment/auth"
 	"github.com/marwanjuna/latihan-assessment/book"
 	"github.com/marwanjuna/latihan-assessment/entity"
 	"github.com/marwanjuna/latihan-assessment/helper"
@@ -12,10 +12,11 @@ import (
 
 type bookHandler struct {
 	bookService book.BookService
+	authService auth.Service
 }
 
-func NewBookHandler(bookService book.BookService) *bookHandler {
-	return &bookHandler{bookService}
+func NewBookHandler(bookService book.BookService, authService auth.Service) *bookHandler {
+	return &bookHandler{bookService, authService}
 }
 
 func (h *bookHandler) ShowAllBooksHandler(c *gin.Context) {
@@ -42,7 +43,9 @@ func (h *bookHandler) CreateBookHandler(c *gin.Context) {
 		return
 	}
 
-	response, err := h.bookService.CreateNewBook(inputBook)
+	userID := int(c.MustGet("currentUser").(int))
+
+	response, err := h.bookService.CreateNewBook(userID, inputBook)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -55,17 +58,6 @@ func (h *bookHandler) CreateBookHandler(c *gin.Context) {
 
 func (h *bookHandler) ShowBookByIDhandler(c *gin.Context) {
 	id := c.Param("id")
-
-	idParam, _ := strconv.Atoi(id)
-
-	userData := int(c.MustGet("currentUser").(int))
-
-	if idParam != userData {
-		c.JSON(401, gin.H{
-			"error": "unauthorized user",
-		})
-		return
-	}
 
 	book, err := h.bookService.GetBookByID(id)
 	if err != nil {
@@ -81,23 +73,12 @@ func (h *bookHandler) ShowBookByIDhandler(c *gin.Context) {
 func (h *bookHandler) UpdateBookByIDHandler(c *gin.Context) {
 	id := c.Param("id")
 
-	var updateBookInput entity.BookInput
+	var updateBookInput entity.UpdateBookInput
 
 	if err := c.ShouldBindJSON(&updateBookInput); err != nil {
 		splitError := helper.SplitErrorInformation(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"errors": splitError,
-		})
-		return
-	}
-
-	idParam, _ := strconv.Atoi(id)
-
-	userData := int(c.MustGet("currentUser").(int))
-
-	if idParam != userData {
-		c.JSON(401, gin.H{
-			"error": "unauthorized user",
 		})
 		return
 	}
@@ -110,13 +91,26 @@ func (h *bookHandler) UpdateBookByIDHandler(c *gin.Context) {
 		return
 	}
 
+	idParam := int(book.UserID)
+
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		c.JSON(401, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, book)
 }
 
 func (h *bookHandler) DeleteByBookIDHandler(c *gin.Context) {
 	id := c.Param("id")
 
-	idParam, _ := strconv.Atoi(id)
+	bookDetail, _ := h.bookService.GetBookByID(id)
+
+	idParam := int(bookDetail.UserID)
 
 	userData := int(c.MustGet("currentUser").(int))
 

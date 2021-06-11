@@ -17,3 +17,9 @@ type BookInput struct {
 	Author string `json:"author" binding:"required"`
 	Year   int    `json:"year" binding:"required"`
 }
+
+type UpdateBookInput struct {
+	Title  string `json:"title"`
+	Author string `json:"author"`
+	Year   int    `json:"year"`
+}

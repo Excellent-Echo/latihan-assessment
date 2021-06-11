@@ -11,9 +11,9 @@ import (
 
 type BookService interface {
 	GetAllBooks() ([]BookFormat, error)
-	CreateNewBook(book entity.BookInput) (entity.Book, error)
+	CreateNewBook(userID int, book entity.BookInput) (entity.Book, error)
 	GetBookByID(id string) (entity.Book, error)
-	UpdateBookByID(id string, dataInput entity.BookInput) (entity.Book, error)
+	UpdateBookByID(id string, dataInput entity.UpdateBookInput) (entity.Book, error)
 	DeleteBookByID(id string) (interface{}, error)
 }
 
@@ -42,11 +42,12 @@ func (s *bookService) GetAllBooks() ([]BookFormat, error) {
 	return booksFormat, nil
 }
 
-func (s *bookService) CreateNewBook(book entity.BookInput) (entity.Book, error) {
+func (s *bookService) CreateNewBook(userID int, book entity.BookInput) (entity.Book, error) {
 	var newBook = entity.Book{
 		Title:  book.Title,
 		Author: book.Author,
 		Year:   book.Year,
+		UserID: userID,
 	}
 
 	createBook, err := s.repository.PostBook(newBook)
@@ -77,7 +78,7 @@ func (s *bookService) GetBookByID(id string) (entity.Book, error) {
 	return book, nil
 }
 
-func (s *bookService) UpdateBookByID(id string, dataInput entity.BookInput) (entity.Book, error) {
+func (s *bookService) UpdateBookByID(id string, dataInput entity.UpdateBookInput) (entity.Book, error) {
 	var dataUpdate = map[string]interface{}{}
 
 	if err := helper.ValidateIDNumber(id); err != nil {

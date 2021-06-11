@@ -118,7 +118,7 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 
 	if idParam != userData {
 		c.JSON(401, gin.H{
-			"error": "unauthorized user",
+			"error": "unauthorize user",
 		})
 		return
 	}
@@ -143,7 +143,7 @@ func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
 
 	if idParam != userData {
 		c.JSON(401, gin.H{
-			"error": "unauthorized user",
+			"error": "unauthorize user",
 		})
 		return
 	}
