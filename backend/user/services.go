@@ -18,12 +18,19 @@ func NewService(repository user.Repository) *service {
 	return &service(repository)
 }
 
-func (s *service) GetAllUser() ([]entity.User, error) {
+func (s *service) GetAllUser() ([]UserFormat, error) {
 	Users, err := s.repository.GetAll()
 
-	if err != nil {
-		return Users, err
+	var usersFormat []UserFormat
+
+	for _, user := range Users {
+		var userFormat = UserFormatting(user)
+		usersFormat = append(usersFormat, userFormat)
 	}
 
-	return Users, nil
+	if err != nil {
+		return usersFormat, err
+	}
+
+	return usersFormat, nil
 }

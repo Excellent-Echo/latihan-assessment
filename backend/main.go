@@ -3,13 +3,17 @@ package main
 import (
 	"latihan-assessment/backend/config"
 	"latihan-assessment/backend/helper"
+	"latihan-assessment/backend/user"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 var (
-	DB *gorm.DB = config.Conn()
+	DB             *gorm.DB = config.Conn()
+	userRepository          = user.NewRepository(DB)
+	userService             = user.NewService(userRepository)
+	userHandler             = user.NewUserHandler(userService)
 )
 
 func main() {

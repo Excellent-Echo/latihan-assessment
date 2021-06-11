@@ -2,6 +2,7 @@ package user
 
 import (
 	"latihan-assessment/backend/user"
+	"latihan-assessment/backend/helper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,7 @@ func (h *userhandler) ShowAllUser(c *gin.Context) {
 		})
 		return
 	}
-	
+
+	UserResponse := helper.APIResponse("success get all users", 200, "success", users)
 	c.JSON(http.StatusOK, users)
 }
