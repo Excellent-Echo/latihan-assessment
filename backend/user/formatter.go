@@ -1,13 +1,15 @@
 package user
 
 import (
-	"latihantassessment/entity"
+	"latihanassesment/entity"
 	"time"
 )
 
 type UserFormat struct {
-	ID        int    `json:"id"`
-
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	DateBirth time.Time `json:"date_birth"`
+	Email     string    `json:"email"`
 }
 
 type DeleteFormat struct {
@@ -18,7 +20,9 @@ type DeleteFormat struct {
 func FormatUser(user entity.User) UserFormat {
 	var formatUser = UserFormat{
 		ID:        user.ID,
+		Name:      user.Name,
 		Email:     user.Email,
+		DateBirth: user.DateBirth,
 	}
 
 	return formatUser
