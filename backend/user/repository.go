@@ -9,6 +9,9 @@ import (
 type Repository interface {
 	GetAll() ([]entity.User, error)
 	Create(user entity.User) (entity.User, error)
+	FindbyID(ID int) (entity.User, error)
+	UpdateByID(ID int) (entity.User, error)
+	DeleteByID(ID int) (string, error)
 }
 
 type repository struct {

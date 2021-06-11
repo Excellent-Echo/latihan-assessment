@@ -1,9 +1,7 @@
 package user
 
-import "backend/entity"
-
 type Service interface {
-	GetAllUser() ([]entity.User, error)
+	GetAllUser() ([]UserFormat, error)
 }
 
 type service struct {
@@ -14,12 +12,18 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) GetAllUser() ([]entity.User, error) {
-	Users, err := s.repository.GetAll()
+func (s *service) GetAllUser() ([]UserFormat, error) {
+	users, err := s.repository.GetAll()
+	var formatUsers []UserFormat
 
-	if err != nil {
-		return Users, err
+	for _, user := range users {
+		formatUser := FormatUser(user)
+		formatUsers = append(formatUsers, formatUser)
 	}
 
-	return Users, nil
+	if err != nil {
+		return formatUsers, err
+	}
+
+	return formatUsers, nil
 }

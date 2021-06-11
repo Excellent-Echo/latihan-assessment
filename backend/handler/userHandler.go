@@ -15,7 +15,7 @@ func NewUserHandler(userService user.Service) *userHandler {
 	return &userHandler{userService}
 }
 
-func (h *userHandler) ShowAllUser(c gin.Context) {
+func (h *userHandler) ShowAllUser(c *gin.Context) {
 	users, err := h.userService.GetAllUser()
 
 	if err != nil {
