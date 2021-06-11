@@ -17,5 +17,20 @@ type User struct {
 }
 
 type LoginUserInput struct {
-	Email string `json:"email" binding:"required,email"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+type UserInput struct {
+	Name      string    `json:"name"`
+	Address   string    `json:"address"`
+	DateBirth time.Time `json:"date_birth"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+}
+
+type UpdateUserInput struct {
+	Name      string    `json:"name"`
+	Address   string    `json:"address"`
+	DateBirth time.Time `json:"date_birth"`
 }
