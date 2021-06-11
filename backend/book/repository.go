@@ -7,6 +7,7 @@ import (
 
 type BookRepository interface {
 	GetAllBooks() ([]entity.Book, error)
+	PostBook(book entity.Book) (entity.Book, error)
 }
 
 type Repository struct {
@@ -27,4 +28,12 @@ func (r *Repository) GetAllBooks() ([]entity.Book, error) {
 	}
 
 	return Books, nil
+}
+
+func (r *Repository) PostBook(book entity.Book) (entity.Book, error) {
+	if err := r.db.Create(&book).Error; err != nil {
+		return book, err
+	}
+
+	return book, nil
 }

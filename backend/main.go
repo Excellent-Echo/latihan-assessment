@@ -10,6 +10,7 @@ func main() {
 	r := gin.Default()
 
 	routes.UserRoute(r)
+	routes.BookRoute(r)
 
 	r.Run(":4444")
 }
