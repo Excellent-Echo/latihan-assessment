@@ -29,3 +29,7 @@ func (h *userhandler) ShowAllUser(c *gin.Context) {
 	UserResponse := helper.APIResponse("success get all users", 200, "success", users)
 	c.JSON(http.StatusOK, users)
 }
+
+func (h *userHandler) LoginUserHandler(c *gin.Context) {
+	var loginInput user.User
+}
