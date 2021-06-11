@@ -13,8 +13,8 @@ const Routes = () => {
 		<Router>
 			<NavbarMenu />
 			<Switch>
-				<Router path="/register" exact component={Register} />
-				<Router path="/login" exact component={Login} />
+				<Route path="/register" exact component={Register} />
+				<Route path="/login" exact component={Login} />
 				<Route path="/" exact component={HomePage} />
 				<Route component={NotFound} />
 			</Switch>
