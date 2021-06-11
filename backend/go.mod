@@ -1,4 +1,4 @@
-module Book_list
+module latihan-assessment
 
 go 1.16
 

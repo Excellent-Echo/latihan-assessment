@@ -4,6 +4,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
+	"latihan-assessment/entities"
+
 	"fmt"
 )
 
@@ -18,6 +20,9 @@ func ConnDB() *gorm.DB  {
 	}
 
 	fmt.Println("database connected")
+
+	db.AutoMigrate(&entities.Users{})
+	db.AutoMigrate(&entities.Books{})
 
 	return db
 
