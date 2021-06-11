@@ -5,13 +5,13 @@ import (
 )
 
 type User struct {
-	ID        uint `gorm:"primaryKey;autoIncrement"`
-	Name      string
-	Address   string
-	DateBirth time.Time
-	Email     string `gorm:"unique"`
-	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Books
+	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
+	Name      string    `json:"name"`
+	Address   string    `json:"address"`
+	DateBirth time.Time `json:"date_birth"`
+	Email     string    `gorm:"unique" json:"email"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Books     []Book    `gorm:"foreignKey:UserID"`
 }
