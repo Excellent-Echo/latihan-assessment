@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/marwanjuna/latihan-assessment/routes"
 
 	"github.com/gin-gonic/gin"
@@ -12,5 +14,6 @@ func main() {
 	routes.UserRoute(r)
 	routes.BookRoute(r)
 
-	r.Run(":4444")
+	port := os.Getenv("PORT")
+	r.Run(":" + port)
 }

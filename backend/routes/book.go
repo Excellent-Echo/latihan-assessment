@@ -14,4 +14,8 @@ var (
 
 func BookRoute(r *gin.Engine) {
 	r.GET("/books", bookHandler.ShowAllBooksHandler)
+	r.POST("/books", bookHandler.CreateBookHandler)
+	r.GET("/books/:id", bookHandler.ShowBookByIDhandler)
+	r.PUT("/books/:id", bookHandler.UpdateBookByIDHandler)
+	r.DELETE("/books/:id", bookHandler.DeleteByBookIDHandler)
 }
