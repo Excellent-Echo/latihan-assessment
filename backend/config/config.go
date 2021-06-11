@@ -3,6 +3,7 @@ package config
 import (
 	"book-list/migration"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,6 +13,10 @@ import (
 
 func Connect() *gorm.DB {
 	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	DBUser := os.Getenv("DB_USERNAME")
 	DBPassword := os.Getenv("DB_PASSWORD")
