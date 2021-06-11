@@ -15,4 +15,5 @@ type Books struct {
 type BookInput struct {
 	Tittle string `json:"tittle"`
 	Author string `json:"author"`
+	Year   string `json:"year"`
 }
