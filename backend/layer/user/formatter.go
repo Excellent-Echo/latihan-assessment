@@ -13,6 +13,14 @@ type UserOutput struct {
 	Address   string    `json:"address"`
 }
 
+type UserInput struct {
+	Name      string    `json:"name"`
+	Address   string    `json:"address"`
+	DateBirth time.Time `json:"date_birth"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+}
+
 func UserOutputFormat(user entity.Users) UserOutput {
 	var userOutput = UserOutput{
 		ID:        user.ID,

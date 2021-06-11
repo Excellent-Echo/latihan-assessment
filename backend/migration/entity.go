@@ -15,6 +15,7 @@ type Users struct {
 }
 
 type Books struct {
+	ID        int `gorm:"Primarykey"`
 	UserID    int
 	Tittle    string
 	Author    string

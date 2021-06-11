@@ -23,3 +23,21 @@ func (h *userHandler) ShowAllUser(c *gin.Context) {
 
 	c.JSON(200, users)
 }
+
+func (h *userHandler) CreateNewUsers(c *gin.Context) {
+	var input user.UserInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	newUser, err := h.service.CreateNewUser(input)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(201, newUser)
+
+}
