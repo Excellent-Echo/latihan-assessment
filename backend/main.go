@@ -1,11 +1,15 @@
 package main
 
 import (
+	"latihanassesment/routes"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
- 	r := gin.Default()
+	r := gin.Default()
 
- 	r.Run(":4444")
+	routes.UserRoute(r)
+	routes.BookRoute(r)
+	r.Run(":4444")
 }

@@ -15,6 +15,7 @@ type User struct {
 type Book struct {
 	ID     int    `gorm:"primaryKey" json:"id"`
 	Author string `json:"author"`
+	Title  string `json:"title"`
 	Year   int    `json:"year"`
 	UserID int    `json:"user_id"`
 }

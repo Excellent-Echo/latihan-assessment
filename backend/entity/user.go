@@ -32,5 +32,4 @@ type UpdateUserInput struct {
 	Name      string    `json:"name"`
 	DateBirth time.Time `json:"date_birth"`
 	Email     string    `json:"email"`
-	Password  string    `json:"-"`
 }
