@@ -53,4 +53,24 @@ func (r *repository) FindbyID(ID int) (entity.User, error) {
 
 func (r *repository) UpdateByID(ID int, dataUpdate map[string]interface{}) (entity.User, error) {
 
+	var user entity.User
+
+	if err := r.db.Model(&user).Where("id= ?", ID).Updates(dataUpdate).Error; err != nil {
+		return user, err
+	}
+
+	if err := r.db.Where("id = ? ", ID).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+
+}
+func (r *repository) DeleteByID(ID int) (string, error) {
+
+	if err := r.db.Where("id = ? ", ID).Delete(&entity.User{}).Error; err != nil {
+		return "error", err
+	}
+
+	return "delete succsess", nil
 }
