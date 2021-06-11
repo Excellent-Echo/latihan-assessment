@@ -13,3 +13,11 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type UserInput struct {
+	Name      string    `json:"name" binding:"required"`
+	Address   string    `json:"address" binding:"required"`
+	DateBirth time.Time `json:"date_birth" binding:"required"`
+	Email     string    `json:"email" binding:"required,email"`
+	Password  string    `json:"password" binding:"required"`
+}
