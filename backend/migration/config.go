@@ -3,19 +3,18 @@ package migration
 import "time"
 
 type User struct {
-	ID        int `gorm:"primaryKey"`
-	Name      string
-	DateBirth time.Time
-	Address   string
-	CreateAt  time.Time
-	UpdateAt  time.Time
-	Books     []Book
+	ID        int       `gorm:"primaryKey" json:"id"`
+	Name      string    `json:"name"`
+	DateBirth time.Time `json:"date_birth"`
+	Email     string    `json:"email"`
+	Password  string    `json:"-"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Book struct {
-	ID     int `gorm:"primaryKey"`
-	Title  string
-	Author string
-	Year   int
-	UserID int
+	ID     int    `gorm:"primaryKey" json:"id"`
+	Author string `json:"author"`
+	Year   int    `json:"year"`
+	UserID int    `json:"user_id"`
 }
