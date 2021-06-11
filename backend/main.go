@@ -1,12 +1,18 @@
 package main
 
-import "github.com/gin-gonic/gin
-		backend/config
-"
+import (
+	"fmt"
+	"net/http"
+)
 
 func main() {
-	config.Connnection()
-	r := gin.Default()
 
-	r.Run(":1000")
+	http.HandlerFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello world"))
+	})
+
+	port := "localhost:8000"
+
+	fmt.Println("Starting web server at", port)
+	http.ListenAndServe(port, nil)
 }
