@@ -43,5 +43,3 @@ func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 
 	return formatUser, nil
 }
-
-//STUCK
