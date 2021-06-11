@@ -1,7 +1,10 @@
 package main
 
-import "github.com/marwanjuna/latihan-assessment/config"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	config.Connect()
+	r := gin.Default()
+
 }
