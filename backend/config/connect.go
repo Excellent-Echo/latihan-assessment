@@ -3,6 +3,8 @@ package config
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"latihan-assessment/backend/entity"
 )
 
 func Conn() *gorm.DB {
@@ -12,6 +14,9 @@ func Conn() *gorm.DB {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	db.AutoMigrate(&entity.Users{})
+	db.AutoMigrate(&entity.Books{})
 
 	return db
 }

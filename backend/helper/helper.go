@@ -89,5 +89,16 @@ func HandleUserUpdate(c *gin.Context) {
 }
 
 func HandleBook(c *gin.Context) {
+	var books []entity.Books
 
+	if err := DB.Preload("Users").Find(&books).Error; err != nil {
+		log.Println(err.Error())
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "error in internal server",
+		})
+		return
+	}
+
+	c.JSON(httpp.StatusOK, books)
 }
