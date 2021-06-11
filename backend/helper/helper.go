@@ -38,12 +38,49 @@ func HandleUserID(c *gin.Context) {
 func HandleUsersPOST(c *gin.Context) {
 	var users []entity.Users
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&users); err != nil {
 		log.Println(err.Error())
 		return
 	}
 
-	if err := DB.Create(&user).Error; err != nil {
+	if err := DB.Create(&users).Error; err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
+}
+
+func HandleUserDelete(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	if err := DB.Where("id = ?", id).Delete(&User{}).Error; err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":      id,
+		"message": "success delete",
+	})
+}
+
+func HandleUserUpdate(c *gin.Context) {
+	var users []entity.Users
+	var userInput []entity.Users
+
+	id := c.Params.ByName("id")
+	DB.Where("id = ?", id).Find(&users)
+
+	if err := c.ShouldBindJSON(&userInput); err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	users.Name = userInput.Name
+	users.Address = userInput.Address
+
+	if err := DB.Where("id = ?", id).Save(&users).Error; err != nil {
 		log.Println(err.Error())
 		return
 	}
