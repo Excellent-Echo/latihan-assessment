@@ -11,12 +11,21 @@ const HomePage = () =>{
     <Navbar.Brand href="#home">Navbar with text</Navbar.Brand>
     <Navbar.Toggle />
     <Navbar.Collapse className="justify-content-end">
-      <Navbar.Text>
-        Signed in as: <a href="#login">Mark Otto</a>
-      </Navbar.Text>
+      <Button onClick={e =>{
+          e.preventDefault();
+          history.push("/login")
+      }}>
+      </Button>
+      <Button onClick={e =>{
+          e.preventDefault();
+          history.push("/register")
+      }}>
+      </Button>
     </Navbar.Collapse>
   </Container>
 </Navbar>
         </>
     )
 }
+
+export default HomePage;
