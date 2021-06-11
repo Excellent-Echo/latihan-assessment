@@ -13,6 +13,7 @@ type Service interface {
 	GetAllUsers() ([]entity.UserOutput, error)
 	CreateNewUser(user entity.UserInput) (entity.UserOutput, error)
 	LoginUser(loginInput entity.LoginInput) (entity.Users, error)
+	GetUserByID(ID string) (entity.UserOutput, error)
 }
 
 type service struct {
@@ -76,4 +77,19 @@ func (s *service) LoginUser(loginInput entity.LoginInput) (entity.Users, error) 
 	}
 
 	return user, nil
+}
+
+func (s *service) GetUserByID(ID string) (entity.UserOutput, error) {
+	user, err := s.repo.FindUserByID(ID)
+
+	if err != nil {
+		return entity.UserOutput{}, err
+	}
+
+	if user.ID == 0 {
+		return entity.UserOutput{}, errors.New("User ID Not Found")
+	}
+
+	FormatOutput := UserOutputFormat(user)
+	return FormatOutput, nil
 }

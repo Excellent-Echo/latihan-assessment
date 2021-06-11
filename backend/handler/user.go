@@ -74,3 +74,14 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 	}
 	c.JSON(200, LoginOutput)
 }
+
+func (h *userHandler) GetUserByid(c *gin.Context) {
+	var LoginInput entity.LoginInput
+
+	if err := c.ShouldBindJSON(&LoginInput); err != nil {
+		c.JSON(400, gin.H{"error": "input data required"})
+		return
+	}
+
+	userData, err := h.service.LoginUser(LoginInput)
+}

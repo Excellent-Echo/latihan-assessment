@@ -10,6 +10,7 @@ type Repository interface {
 	FindAll() ([]entity.Users, error)
 	CreateUser(user entity.Users) (entity.Users, error)
 	FindUserByEmail(email string) (entity.Users, error)
+	FindUserByID(ID string) (entity.Users, error)
 }
 
 type repository struct {
@@ -44,4 +45,14 @@ func (r *repository) FindUserByEmail(email string) (entity.Users, error) {
 	}
 
 	return users, nil
+}
+
+func (r *repository) FindByID(ID string) (entity.Users, error) {
+	var user entity.Users
+
+	if err := r.db.Where("id = ?", ID).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
