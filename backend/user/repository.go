@@ -10,7 +10,7 @@ type Repository interface {
 	GetAll() ([]entity.User, error)
 	Create(user entity.User) (entity.User, error)
 	FindbyID(ID int) (entity.User, error)
-	UpdateByID(ID int) (entity.User, error)
+	UpdateByID(ID int, dataUpdate map[string]interface{}) (entity.User, error)
 	DeleteByID(ID int) (string, error)
 }
 
@@ -39,4 +39,18 @@ func (r *repository) Create(user entity.User) (entity.User, error) {
 	}
 
 	return user, nil
+}
+
+func (r *repository) FindbyID(ID int) (entity.User, error) {
+	var user entity.User
+
+	if err := r.db.Where("id = ? ", ID).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (r *repository) UpdateByID(ID int, dataUpdate map[string]interface{}) (entity.User, error) {
+
 }
