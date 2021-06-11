@@ -1,6 +1,8 @@
 package entities
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	Id      uint   `gorm:"primaryKey;not null;autoIncrement"`
@@ -11,4 +13,5 @@ type User struct {
 	Password  string `gorm:"size:255"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Book []Books `gorm:foreignKey:UserID`
 }
