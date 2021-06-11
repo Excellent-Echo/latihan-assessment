@@ -1,9 +1,15 @@
 package main
 
 import (
+	"latihan-assessment/backend/config"
 	"latihan-assessment/backend/helper"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+var (
+	DB *gorm.DB = config.Conn()
 )
 
 func main() {
