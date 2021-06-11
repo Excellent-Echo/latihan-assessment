@@ -2,6 +2,7 @@ package user
 
 import (
 	"book-list/entity"
+	"fmt"
 	"time"
 )
 
@@ -21,6 +22,7 @@ func NewService(repo Repository) *service {
 func (s *service) GetAllUsers() ([]UserOutput, error) {
 	users, err := s.repo.FindAll()
 
+	fmt.Print(users)
 	var usersOutput []UserOutput
 
 	for _, user := range users {
@@ -40,7 +42,7 @@ func (s *service) CreateNewUser(user UserInput) (UserOutput, error) {
 	var newUser = entity.Users{
 		Name:      user.Name,
 		Address:   user.Address,
-		DateBirth: user.DateBirth,
+		DateBirth: FormatDateBirth(user.DateBirth),
 		Email:     user.Email,
 		Password:  user.Password,
 		CreatedAt: time.Now(),
