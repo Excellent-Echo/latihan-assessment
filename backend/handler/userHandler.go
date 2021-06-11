@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"latihan-assessment/entity"
 	"latihan-assessment/helper"
 	"latihan-assessment/user"
 )
@@ -15,7 +16,7 @@ func NewUserHander(userService user.Service) *userHandler {
 }
 
 func (h *userHandler) ShowAllUserHandler(c *gin.Context) {
-	users, err := h.userService.GetAllUser()
+	users, err := h.userService.AllUser()
 
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -33,4 +34,81 @@ func (h *userHandler) ShowAllUserHandler(c *gin.Context) {
 	)
 
 	c.JSON(200, response)
+}
+
+func (h *userHandler) CreateUserHandler(c *gin.Context) {
+	var NewUserInput entity.UserInput
+
+	if err := c.ShouldBindJSON(&NewUserInput); err != nil {
+		splitError := helper.ErrorInformation(err)
+
+		responseError := helper.APIResponse(
+			"Input data required",
+			400,
+			"bad request",
+			gin.H{
+				"error": splitError,
+			},
+		)
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	newUser, err := h.userService.NewUser(NewUserInput)
+
+	if err != nil {
+		responseError := helper.APIResponse(
+			"Internal server error",
+			500,
+			"error",
+			gin.H{
+				"error": err.Error(),
+			},
+		)
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse(
+		"Success Create new Users Data",
+		201,
+		"Status Created",
+		newUser,
+	)
+
+	c.JSON(201, response)
+}
+
+func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	userByID, err := h.userService.UserById(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("Error bad request get user id", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("Success get user by id", 200, "success", userByID)
+	c.JSON(200, response)
+}
+
+func (h *userHandler) DeleteUserIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	userDelete, err := h.userService.DeleteById(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("Error delete user id", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	responseSuccess := helper.APIResponse("Success delete user id", 200, "Delete OK", userDelete)
+	c.JSON(200, responseSuccess)
 }
