@@ -20,6 +20,6 @@ func UserRoute(route *gin.Engine) {
 	route.POST("/users/register", userHandler.CreateUserHandler)
 	//route.POST("/users/login", userHandler.ShowAllUserHandler)
 	route.GET("users/:user_id", userHandler.UserByIDHandler)
-	route.PUT("users/:user_id", userHandler.ShowAllUserHandler)
+	route.PUT("users/:user_id", userHandler.UpdateUserIDHandler)
 	route.DELETE("users/:user_id", userHandler.DeleteUserIDHandler)
 }

@@ -43,7 +43,7 @@ func (r *repository) CreateUsers(user entity.User) (entity.User, error) {
 func (r *repository) GetUserById(ID string) (entity.User, error) {
 	var user entity.User
 
-	if err := r.db.Where("id = ?", ID).Find(user).Error; err != nil {
+	if err := r.db.Where("id = ?", ID).Find(&user).Error; err != nil {
 		return user, nil
 	}
 
