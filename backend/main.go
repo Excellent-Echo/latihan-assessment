@@ -9,6 +9,7 @@ import (
 func main() {
 	r := gin.Default()
 
+	// ini routingan
 	routes.UserRoute(r)
 
 	r.Run()
