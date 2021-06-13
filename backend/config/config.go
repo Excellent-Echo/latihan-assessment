@@ -1,7 +1,6 @@
 package config
 
 import (
-	"backend/migration"
 	"fmt"
 	"os"
 
@@ -28,8 +27,8 @@ func Connection() *gorm.DB {
 		panic(err.Error())
 	}
 
-	db.AutoMigrate(&migration.User{})
-	db.AutoMigrate(&migration.Book{})
+	// db.AutoMigrate(&migration.User{})
+	// db.AutoMigrate(&migration.Book{})
 
 	return db
 }
