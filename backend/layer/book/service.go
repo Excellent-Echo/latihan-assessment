@@ -132,7 +132,6 @@ func (s *service) SUpdateBookByID(bookID string, input entity.UpdateBookInput) (
 	if input.Author != "" || len(input.Author) != 0 {
 		dataUpdate["Author"] = input.Author
 	}
-
 	if input.Year != "" || len(input.Year) != 0 {
 		dataUpdate["Year"] = input.Year
 	}

@@ -11,5 +11,5 @@ func main() {
 
 	routes.UserRoute(r)
 
-	r.Run(":8000")
+	r.Run()
 }
