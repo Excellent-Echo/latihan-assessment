@@ -2,11 +2,12 @@ package auth
 
 import (
 	"errors"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var key = "rahasia"
+var key = os.Getenv("DB_SECRET_KEY")
 
 type Service interface {
 	GenerateToken(ID int) (string, error)

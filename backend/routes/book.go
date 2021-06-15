@@ -9,7 +9,7 @@ import (
 
 var (
 	bookRepository = book.NewRepository(DB)
-	bookService    = book.NewService(bookRepository)
+	bookService    = book.NewService(bookRepository, userRepository)
 	bookHandler    = handler.NewBookHandler(bookService)
 )
 
@@ -18,4 +18,5 @@ func RouteBook(r *gin.Engine) {
 	r.GET("/books/:book_id", handler.Middleware(authService), bookHandler.ShowBookByID)
 	r.POST("/books", handler.Middleware(authService), bookHandler.CreateNewBooks)
 	r.PUT("/books/:book_id", handler.Middleware(authService), bookHandler.UpdateBookByIDHandler)
+	r.DELETE("/books/:book_id", handler.Middleware(authService), bookHandler.DeleterBookByID)
 }

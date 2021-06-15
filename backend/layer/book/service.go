@@ -2,24 +2,29 @@ package book
 
 import (
 	"book-list/entity"
+	"book-list/helper"
+	"book-list/layer/user"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
 )
 
 type Service interface {
 	GetAllBooks() ([]BookOutput, error)
-	CreateNewBook(book entity.BookInput) (BookOutput, error)
+	CreateNewBook(book entity.BookInput, id string) (BookOutputDetail, error)
 	GetBookByID(ID string) (entity.Books, error)
 	UpdateBookByID(ID string, dataInput entity.BookInput) (entity.Books, error)
+	DeleteBookByID(ID string) (interface{}, error)
 }
 
 type service struct {
-	repo Repository
+	repo     Repository
+	repoUser user.Repository
 }
 
-func NewService(repo Repository) *service {
-	return &service{repo}
+func NewService(repo Repository, repoUser user.Repository) *service {
+	return &service{repo, repoUser}
 }
 
 func (s *service) GetAllBooks() ([]BookOutput, error) {
@@ -40,19 +45,21 @@ func (s *service) GetAllBooks() ([]BookOutput, error) {
 
 }
 
-func (s *service) CreateNewBook(book entity.BookInput) (BookOutput, error) {
+func (s *service) CreateNewBook(book entity.BookInput, id string) (BookOutputDetail, error) {
 	year, _ := strconv.Atoi(book.Year)
+	user, err := s.repoUser.FindUserByID(id)
 
 	var newBook = entity.Books{
 		Tittle:    book.Tittle,
 		Author:    book.Author,
 		Year:      year,
+		UserID:    user.ID,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	createBook, err := s.repo.CreateBook(newBook)
-	bookOutput := BookOutputFormat(createBook)
+	bookOutput := FormatOutputDetail(createBook)
 	if err != nil {
 		return bookOutput, err
 	}
@@ -106,4 +113,28 @@ func (s *service) UpdateBookByID(ID string, dataInput entity.BookInput) (entity.
 	}
 
 	return bookUpdated, nil
+}
+
+func (s *service) DeleteBookByID(ID string) (interface{}, error) {
+	book, err := s.repo.FindBookByID(ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if book.ID == 0 {
+		return nil, errors.New("book id not found")
+	}
+
+	status, err := s.repo.DeleteByID(ID)
+
+	if status == "error" {
+		return nil, errors.New("error in internal server")
+	}
+
+	data := fmt.Sprintf("book id %s success deleted", ID)
+
+	formatDelete := helper.FormatDelete(data)
+
+	return formatDelete, nil
 }

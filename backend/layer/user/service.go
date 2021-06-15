@@ -2,6 +2,7 @@ package user
 
 import (
 	"book-list/entity"
+	"book-list/helper"
 	"errors"
 	"fmt"
 	"time"
@@ -150,7 +151,7 @@ func (s *service) DeleteUserByID(ID string) (interface{}, error) {
 
 	data := fmt.Sprintf("user id %s success deleted", ID)
 
-	formatDelete := FormatDelete(data)
+	formatDelete := helper.FormatDelete(data)
 
 	return formatDelete, nil
 }

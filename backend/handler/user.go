@@ -18,6 +18,16 @@ func NewUserHandler(service user.Service, authService auth.Service) *userHandler
 	return &userHandler{service, authService}
 }
 
+// GetUsers godoc
+// @Security Auth
+// @Summary List existing users
+// @Description Get all existing users
+// @Tags users
+// @Accept json
+// @Produce json
+// @success 200 {array} entity.UserOutput
+// @Failure 500 {object} helper.Response
+// @Router /users [get]
 func (h *userHandler) ShowAllUser(c *gin.Context) {
 	users, err := h.service.GetAllUsers()
 
@@ -28,6 +38,18 @@ func (h *userHandler) ShowAllUser(c *gin.Context) {
 	c.JSON(200, users)
 }
 
+// CreateUsers godoc
+// @Security Auth
+// @Summary Create new users
+// @Description Create a new users
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body entity.UserInput true "create user"
+// @Success 200 {object} entity.UserOutput
+// @Failure 400 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/register [post]
 func (h *userHandler) CreateNewUsers(c *gin.Context) {
 	var input entity.UserInput
 
@@ -46,6 +68,17 @@ func (h *userHandler) CreateNewUsers(c *gin.Context) {
 
 }
 
+// Auth godoc
+// @Summary Provides a JSON web Token
+// @Description Authenticates a user and provide a JWT token
+// @Tags users
+// @ID Authentication
+// @Consume json
+// @Produce json
+// @Param user body entity.LoginInput true "Login user"
+// @Success 200 {object} user.UserLoginOutput
+// @Failure 401 {object} helper.Response
+// @Router /users/login [post]
 func (h *userHandler) LoginUser(c *gin.Context) {
 	var loginINput entity.LoginInput
 
@@ -76,6 +109,18 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 	c.JSON(200, LoginOutput)
 }
 
+// GetUserByID godoc
+// @Security Auth
+// @Summary Get user by ID
+// @Description Get a user by user id
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @success 200 {object} entity.UserOutput
+// @Failure 400 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/{id} [get]
 func (h *userHandler) ShowUserByID(c *gin.Context) {
 	id := c.Param("user_id")
 
@@ -89,6 +134,19 @@ func (h *userHandler) ShowUserByID(c *gin.Context) {
 	c.JSON(200, user)
 }
 
+// UpdateUserByID godoc
+// @Security Auth
+// @Summary Update user
+// @Description Update a user by ID
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "user ID"
+// @Param user body entity.UserUpdateInput true "update user"
+// @Success 200 {object} entity.UserOutput
+// @Failure 400 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/{id} [put]
 func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 	id := c.Param("user_id")
 
@@ -121,6 +179,18 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 	c.JSON(200, user)
 }
 
+// DeleteUser godoc
+// @Security Auth
+// @Summary Delete user by id
+// @Description Delete a user by id
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "user ID"
+// @Success 200 {object} helper.Response
+// @Failure 400 {object} helper.Response
+// @Failure 401 {object} helper.Response
+// @Router /users/{id} [delete]
 func (h *userHandler) DeleterUserByID(c *gin.Context) {
 	id := c.Param("user_id")
 

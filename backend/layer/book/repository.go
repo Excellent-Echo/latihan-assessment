@@ -11,6 +11,7 @@ type Repository interface {
 	CreateBook(book entity.Books) (entity.Books, error)
 	FindBookByID(ID string) (entity.Books, error)
 	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.Books, error)
+	DeleteByID(ID string) (string, error)
 }
 
 type repository struct {
@@ -59,4 +60,12 @@ func (r *repository) UpdateByID(ID string, dataUpdate map[string]interface{}) (e
 	}
 
 	return book, nil
+}
+
+func (r *repository) DeleteByID(ID string) (string, error) {
+	if err := r.db.Where("id = ?", ID).Delete(&entity.Books{}).Error; err != nil {
+		return "error", err
+	}
+
+	return "success", nil
 }
