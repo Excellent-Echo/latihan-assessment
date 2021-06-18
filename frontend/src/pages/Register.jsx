@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import userRegisterAction from "../redux/user/register/userRegisterAction";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import styled from "styled-components";
 
 const Register = () => {
   const userRegisterData = useSelector((state) => state.userRegister);
@@ -24,12 +27,17 @@ const Register = () => {
     );
   };
 
+  const Box = styled.div`
+    background-color: #eaeaea;
+    padding: 2rem;
+  `;
+
   return (
     <>
+      <Header />
       <div className="container">
-        <div className="row">
-          <div className="col">
-            <h1 className="text-center">Register</h1>
+        <div className="row justify-content-center mt-5">
+          <Box className="col-sm-6">
             {userRegisterData.errorMessage && (
               <Alert variant="danger" dismissible>
                 <Alert.Heading>{userRegisterData.errorMessage}</Alert.Heading>
@@ -41,12 +49,14 @@ const Register = () => {
               </Alert>
             )}
             {!userRegisterData.successMessage && (
-              <Form onSubmit={handleRegisterSubmit}>
-                <Form.Group controlId="formBasicText">
-                  <Form.Label>Name</Form.Label>
+              <Form
+                onSubmit={handleRegisterSubmit}
+                className="d-flex flex-column justify-content-center align-items-center"
+              >
+                <Form.Group controlId="formBasicText" className="p-2 w-100">
                   <Form.Control
                     type="text"
-                    placeholder="Enter name"
+                    placeholder="Name"
                     required
                     value={userRegisterData.name}
                     onChange={(e) =>
@@ -56,11 +66,10 @@ const Register = () => {
                   <Form.Text className="text-muted"></Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicText">
-                  <Form.Label>Address</Form.Label>
+                <Form.Group controlId="formBasicText" className="p-2 w-100">
                   <Form.Control
                     type="text"
-                    placeholder="Enter address"
+                    placeholder="Address"
                     required
                     value={userRegisterData.address}
                     onChange={(e) =>
@@ -70,11 +79,11 @@ const Register = () => {
                   <Form.Text className="text-muted"></Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="date">
-                  <Form.Label>Birth Date</Form.Label>
+                <Form.Group controlId="date" className="p-2 w-100">
                   <Form.Control
                     type="date"
                     required
+                    placeholder="Birth Date"
                     value={userRegisterData.dateBirth}
                     onChange={(e) =>
                       dispatch(userRegisterAction.setDateBirth(e.target.value))
@@ -83,11 +92,10 @@ const Register = () => {
                   <Form.Text className="text-muted"></Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
+                <Form.Group controlId="formBasicEmail" className="p-2 w-100">
                   <Form.Control
                     type="email"
-                    placeholder="Enter email"
+                    placeholder="Email"
                     required
                     value={userRegisterData.email}
                     onChange={(e) =>
@@ -97,8 +105,7 @@ const Register = () => {
                   <Form.Text className="text-muted"></Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                <Form.Group controlId="formBasicPassword" className="p-2 w-100">
                   <Form.Control
                     type="password"
                     placeholder="Password"
@@ -114,13 +121,14 @@ const Register = () => {
                   type="submit"
                   disabled={userRegisterData.isLoading ? true : false}
                 >
-                  {userRegisterData.isLoading ? "Loading..." : "Submit"}
+                  {userRegisterData.isLoading ? "Loading..." : "Register"}
                 </Button>
               </Form>
             )}
-          </div>
+          </Box>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
