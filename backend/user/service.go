@@ -76,7 +76,7 @@ func (s *userService) LoginUser(input entity.LoginUserInput) (entity.User, error
 	}
 
 	if user.ID == 0 {
-		newError := ("Email/password is incorrect")
+		newError := ("email/password is incorrect")
 		return user, errors.New(newError)
 	}
 
