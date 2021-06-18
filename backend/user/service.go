@@ -76,7 +76,7 @@ func (s *userService) LoginUser(input entity.LoginUserInput) (entity.User, error
 	}
 
 	if user.ID == 0 {
-		newError := fmt.Sprintf("user id %v not found", user.ID)
+		newError := ("Email/password is incorrect")
 		return user, errors.New(newError)
 	}
 
