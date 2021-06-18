@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
+  const [pageURL, setPageURL] = useState("");
+  const location = useLocation();
+  useEffect(() => {
+    setPageURL(location.pathname);
+  }, []);
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -14,12 +21,16 @@ const Header = () => {
           className="justify-content-end"
         >
           <Nav>
-            <Nav.Link href="/register" className="mr-5">
-              Register
-            </Nav.Link>
-            <Nav.Link href="/login" className="mr-5">
-              Login
-            </Nav.Link>
+            {pageURL === "/register" || (
+              <Nav.Link href="/register" className="mr-5">
+                Register
+              </Nav.Link>
+            )}
+            {pageURL === "/login" || (
+              <Nav.Link href="/login" className="mr-5">
+                Login
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

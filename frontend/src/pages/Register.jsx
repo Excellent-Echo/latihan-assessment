@@ -27,17 +27,15 @@ const Register = () => {
     );
   };
 
-  const Box = styled.div`
-    background-color: #eaeaea;
-    padding: 2rem;
-  `;
-
   return (
     <>
       <Header />
       <div className="container">
         <div className="row justify-content-center mt-5">
-          <Box className="col-sm-6">
+          <div
+            className="col-sm-6"
+            style={{ backgroundColor: "#eaeaea", padding: "2rem" }}
+          >
             {userRegisterData.errorMessage && (
               <Alert variant="danger" dismissible>
                 <Alert.Heading>{userRegisterData.errorMessage}</Alert.Heading>
@@ -110,6 +108,7 @@ const Register = () => {
                     type="password"
                     placeholder="Password"
                     required
+                    autocomplete="new-password"
                     value={userRegisterData.password}
                     onChange={(e) =>
                       dispatch(userRegisterAction.setPassword(e.target.value))
@@ -125,7 +124,7 @@ const Register = () => {
                 </Button>
               </Form>
             )}
-          </Box>
+          </div>
         </div>
       </div>
       <Footer />
